@@ -7,4 +7,4 @@ def user_greeting(name: str = "Learner"):
     """
     Simple MCP prompt to greet a user.
     """
-    return f"Hello, {name}! Welcome to KodexAcademy."
+    return f"Hello, {name}! Welcome to CodeAuris."

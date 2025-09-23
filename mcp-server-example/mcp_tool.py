@@ -11,20 +11,19 @@ load_dotenv()
 
 mcp = mcp_instance.mcp
 
-@mcp.tool("kodex_academy_chat")
-async def kodex_academy_chat(query: str):
+@mcp.tool("codeauris_chat")
+async def codeauris_chat(query: str):
     """
-    Very simple Q&A over the knowledge_text resource.
+    Very simple Q&A over the codeauris text resource.
     Returns lines that contain the query (case-insensitive).
     """
     try:
-        text = await mcp.read_resource("http://localhost/kodex_academy")
+        text = await mcp.read_resource("http://localhost/codeauris")
         if not text:
             return {"error": "No text resource available"}
 
-        # Extract string
-        text_str = str(text)  # now it's a plain string
-        lines_list = text_str.split('\n')
+        for line in text:
+            lines_list = line.content.split('\n')
 
         results = [line.strip() for line in lines_list if query.lower() in line.lower()]
         return {
@@ -36,8 +35,8 @@ async def kodex_academy_chat(query: str):
         return {"error": f"Failed to process query: {str(e)}"}
 
 
-@mcp.tool("send_email_bulk")
-def send_email_bulk(subject, recipient, smtp_server="smtp.gmail.com", smtp_port=587):
+@mcp.tool("send_email")
+def send_email(subject, recipient, smtp_server="smtp.gmail.com", smtp_port=587):
     """
     Send a newsletter to multiple recipients in a single email using BCC or TO field.
 
