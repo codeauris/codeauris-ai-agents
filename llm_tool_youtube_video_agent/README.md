@@ -3,10 +3,15 @@
 - YouTube Video Transcript Agent for Customer Support
 
 **Links:**
-- [Video link](https://www.youtube.com/watch?v=X_iace1GOxs)
-- [Blog link]()
+- [Video link](https://www.youtube.com/watch?v=pEy4m8lzZss)
 
-**How to run this example**
+**Details**
+- This code will extract the English transcript from any given YouTube video URL
+- We can then provide the query, to get results based on the extracted content
+- youtube_video_agent_context_tool.py - stores the conversation history and responses including your previous chat
+- youtube_video_agent_stateless_tool.py - does not store the conversation history
+
+## How to run this example
 - Clone this repo 
 - Navigate to downloaded folder and create new venv
 ```
@@ -36,4 +41,3 @@ pip install -r requirements.txt
 ```
 python youtube_video_agent_context_tool.py
 ```
-
