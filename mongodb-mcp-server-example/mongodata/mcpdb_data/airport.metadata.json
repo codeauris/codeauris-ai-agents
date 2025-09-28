@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"1a4fc8e4be414009a9ead06ff28d2840","collectionName":"airport","type":"collection"}
