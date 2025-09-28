@@ -67,6 +67,9 @@ This project provides a comprehensive setup for running and testing MongoDB MCP 
 ```bash
 git clone https://github.com/CodeAuris/mongodb-mcp-server-example.git
 cd mongodb-mcp-server-example
+
+# Unzip MongoDB Data to Restore
+tar -xf mongodata\mcpdb_data.rar -C mongodata\
 ```
 
 ### 2. Start Services
