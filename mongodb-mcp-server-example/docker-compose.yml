@@ -1,0 +1,144 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: mcpdb_data
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mcp-network
+      - mongo-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MongoDB Restore Service
+  mongorestore:
+    image: mongo:latest
+    container_name: mongorestore
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - mongo-network
+      - mcp-network
+    volumes:
+      - "./mongodata:/dump"
+    entrypoint:
+      - mongorestore
+      - "--username=mongoadmin"
+      - "--password=secret"
+      - "--authenticationDatabase=admin"
+      - "--host=mongodb"
+      - "/dump"
+    stdin_open: false
+    tty: false
+    restart: "no"  # Run once and exit
+
+  # MongoDB Shell Service
+  mongosh:
+    image: mongo:latest
+    container_name: mongosh
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - mongo-network
+      - mcp-network
+    entrypoint: ["mongosh", "mongodb://mongoadmin:secret@mongodb:27017"]
+    stdin_open: true
+    tty: true
+    profiles: ["tools"]  # Only start when explicitly requested
+
+  # MCP MongoDB Server
+  mcp-mongodb-server:
+    build:
+      context: ./mcp-server  # path to your MCP server Dockerfile folder
+      dockerfile: Dockerfile
+    container_name: mcp-mongodb-server
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      # MongoDB connection for MCP server
+      MONGO_URI: mongodb://mongoadmin:secret@mongodb:27017/mcpdb_data
+      MONGO_DB_NAME: mcpdb_data
+      # MCP Server specific settings
+      MCP_SERVER_PORT: 3000
+      NODE_ENV: production
+      DEBUG: "mcp:*"
+    ports:
+      - "3000:3000"  # Expose MCP server port
+    networks:
+      - mcp-network
+      - mongo-network
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+  # MCP Inspector for testing and debugging
+  modelcontextinspector:
+    build:
+      context: ./mcp-inspector  # path to MCP inspector Dockerfile
+      dockerfile: Dockerfile
+    container_name: modelcontextinspector
+    depends_on:
+      mcp-mongodb-server:
+        condition: service_healthy
+    environment:
+      # MCP Inspector specific environment variables
+      CLIENT_PORT: 6274
+      SERVER_PORT: 6277
+      HOST: 0.0.0.0
+      NODE_ENV: production
+      # Connection to MCP server
+      MCP_SERVER_URL: http://mcp-mongodb-server:3000
+      # MongoDB connection (if inspector needs direct DB access)
+      MDB_MCP_CONNECTION_STRING: mongodb://mongoadmin:secret@mongodb:27017/mcpdb_data?authSource=admin
+      DANGEROUSLY_OMIT_AUTH: "true"
+      # Timeout settings
+      MCP_SERVER_REQUEST_TIMEOUT: 10000
+      MCP_REQUEST_TIMEOUT_RESET_ON_PROGRESS: "true"
+      MCP_REQUEST_MAX_TOTAL_TIMEOUT: 60000
+    ports:
+      - "6274:6274"  # MCP Inspector UI port
+      - "6277:6277"  # MCP Proxy server port
+    networks:
+      - mcp-network
+      - mongo-network
+    stdin_open: true
+    tty: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6274"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  mcp-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  mongo-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
