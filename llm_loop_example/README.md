@@ -3,7 +3,7 @@
 - Document Correction Loop 
 
 **Links:**
-- [Video link]()
+- [Video link](https://www.youtube.com/watch?v=Xtv3ebMMG0g)
 
 **Details**
 - Read the resource text content given in the `resource` folder. Text file name is hardcoded in code. Change it according to your use.
