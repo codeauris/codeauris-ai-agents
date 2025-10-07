@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-gateway-example"
+version = "0.1.0"
+description = "MCP Gateway project with Tools, Rsources, Prompts, database, llm operations and gateway modules"
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+    {name = "CodeAuris", email = "codeauris@gmail.com"},
+]
+license = {text = "MIT"}
+keywords = ["mcp", "tools", "database", "gateway"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+# Add your project dependencies here
+dependencies = [
+    # "requests>=2.25.0",
+    # "sqlalchemy>=1.4.0",
+    # Add other dependencies as needed
+    "mcp>=1.0.0",
+    "aiohttp>=3.8.0",
+    "groq"
+]
+
+[project.optional-dependencies]
+dev = [
+    "mcp>=1.0.0",
+    "aiohttp>=3.8.0",
+    "groq"
+]
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mcp_prompts*", "mcp_resources*", "mcp_tools*", "database*", "llm_*", "mcp_*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.txt", "*.md", "*.yml", "*.yaml", "*.json"]
+
+# Optional: Entry points for command-line scripts
+# [project.scripts]
+# your-command = "mcp_tools.main:main"
+
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ["py37", "py38", "py39", "py310", "py311"]
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
