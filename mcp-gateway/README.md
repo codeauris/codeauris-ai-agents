@@ -436,9 +436,3 @@ MIT License - see LICENSE file for details
 **CodeAuris**
 - Email: codeauris@gmail.com
 - GitHub: [@codeauris](https://github.com/codeauris)
-
----
-
-**Version:** 0.1.0  
-**Status:** Alpha  
-**Last Updated:** 2025
