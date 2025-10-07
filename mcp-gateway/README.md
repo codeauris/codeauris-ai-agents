@@ -25,9 +25,10 @@ A comprehensive Model Context Protocol (MCP) Gateway implementation that provide
 - [Available Prompts](#available-prompts)
 - [Database Schema](#database-schema)
 - [Development](#development)
+- [Troubleshooting](#troubleshooting)
 - [License](#license)
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -69,14 +70,14 @@ A comprehensive Model Context Protocol (MCP) Gateway implementation that provide
      └─────────────────────────────┘
 ```
 
-## 🔧 Prerequisites
+## Prerequisites
 
 - **Python**: >= 3.7 (recommended: 3.10+)
 - **pip**: Latest version
 - **SQLite3**: Included with Python
 - **API Keys**: At least one LLM provider API key (Groq, OpenAI, Anthropic, or Google)
 
-## 📦 Installation
+## Installation
 
 ### 1. Clone the Repository
 
@@ -109,7 +110,7 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 ### 1. Environment Variables
 
@@ -143,7 +144,7 @@ DB_FOLDER_PATH=../data/mcp_gateway.db
 
 To enable additional providers, uncomment the relevant code in `llm_call_methods.py`.
 
-## 🚀 Usage
+## Usage
 
 ### Starting the MCP Gateway Server
 
@@ -183,7 +184,7 @@ async def connect_to_gateway():
     })
 ```
 
-## 🛠️ Available Tools
+## Available Tools
 
 ### 1. LLM Query (`llm_query`)
 Query various LLM providers with custom parameters.
@@ -226,7 +227,7 @@ Research and gather information from web sources.
 - `sources` (array): Preferred sources
 - `depth` (string): Research depth (quick, standard, comprehensive)
 
-## 📚 Available Resources
+## Available Resources
 
 ### 1. Conversations (`mcp://gateway/conversations`)
 Access conversation history and context.
@@ -267,7 +268,7 @@ Access usage analytics and statistics.
 - Response times
 - Error logs
 
-## 📝 Available Prompts
+## Available Prompts
 
 ### 1. Code Review (`code_review`)
 Generate comprehensive code review prompts.
@@ -301,7 +302,7 @@ Generate research and investigation prompts.
 - `scope` (string): Research scope
 - `sources` (array, optional): Preferred sources
 
-## 🗄️ Database Schema
+## Database Schema
 
 The gateway uses SQLite with three main tables:
 
@@ -340,7 +341,7 @@ CREATE TABLE file_operations (
 )
 ```
 
-## 👨‍💻 Development
+## Development
 
 ### Project Structure
 
@@ -402,7 +403,7 @@ OPENAI_API_KEY=your_key_here
 # 4. Update the simulate_llm_response() router
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -426,11 +427,11 @@ GROQ_API_KEY=your_actual_key_here
 pip install -r requirements.txt
 ```
 
-## 📄 License
+## License
 
 MIT License - see LICENSE file for details
 
-## 👤 Author
+## Author
 
 **CodeAuris**
 - Email: codeauris@gmail.com
